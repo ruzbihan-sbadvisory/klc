@@ -1,0 +1,51 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { site, articlesPage as ap, getArticles, abs } from '../../lib';
+
+const posts = await getArticles();
+const used = new Set(posts.map(p => p.data.category));
+const cats = [...ap.categories.filter(c => used.has(c)), ...[...used].filter(c => !ap.categories.includes(c))];
+const title = `${ap.title} | ${site.shortName}`;
+const jsonLd = [{
+  '@context': 'https://schema.org', '@type': 'Blog', name: ap.title, url: abs('/artikel/'),
+  publisher: { '@type': 'Organization', name: site.companyName }
+}];
+---
+<Base title={title} description={ap.intro} jsonLd={jsonLd}>
+  <section class="pt-20 bg-brand-blue relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(#fff 2px,transparent 2px);background-size:30px 30px;"></div>
+    <div class="relative w-full max-w-[1400px] mx-auto px-6 py-20">
+      <p data-anim="left" class="text-brand-gold font-semibold mb-3">{ap.eyebrow}</p>
+      <h1 data-anim="left" style="--d:.08s" class="text-4xl md:text-5xl font-bold text-white mb-4">{ap.title}</h1>
+      <p data-anim="up" style="--d:.16s" class="text-gray-200 text-lg max-w-2xl font-light">{ap.intro}</p>
+    </div>
+  </section>
+
+  <section class="w-full max-w-[1400px] mx-auto px-6 py-16">
+    {cats.length > 1 && (
+      <div data-anim="up" class="flex flex-wrap gap-3 mb-10" role="toolbar" aria-label="Filter">
+        <button type="button" data-filter="all" class="px-5 py-2 rounded-full border border-gray-200 text-sm font-semibold bg-brand-blue text-white transition-colors">All</button>
+        {cats.map(c => <button type="button" data-filter={c} class="px-5 py-2 rounded-full border border-gray-200 text-sm font-semibold bg-white text-gray-700">{c}</button>)}
+      </div>
+    )}
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-alt="up">
+        {posts.map(p => <ArticleCard post={p} showMeta />)}
+      </div>
+    ) : null}
+    <p id="no-articles" class:list={['text-gray-500 text-center py-16', posts.length > 0 && 'hidden']}>No articles yet.</p>
+  </section>
+
+  {ap.showCta && (
+    <section class="w-full max-w-[1400px] mx-auto px-6 mb-24">
+      <div data-anim="up" class="bg-brand-light rounded-3xl p-10 md:p-14 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+        <div>
+          <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">{ap.ctaTitle}</h2>
+          <p class="text-gray-600">{ap.ctaText}</p>
+        </div>
+        <button type="button" data-open-form class="bg-brand-gold text-white px-8 py-3.5 rounded-full font-bold hover:opacity-90 whitespace-nowrap">{ap.ctaButton} <i class="fas fa-arrow-right ml-2"></i></button>
+      </div>
+    </section>
+  )}
+</Base>

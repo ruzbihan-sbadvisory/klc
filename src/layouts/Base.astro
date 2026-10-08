@@ -1,0 +1,75 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import ContactModal from '../components/ContactModal.astro';
+import { site, abs, waLink } from '../lib';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  jsonLd?: object[];
+}
+
+const { title = site.seo.title, description = site.seo.description, image = site.seo.ogImage, type = 'website', jsonLd = [] } = Astro.props;
+const canonical = abs(Astro.url.pathname);
+const ogImage = image ? abs(image) : '';
+const c = site.colors;
+const cssVars = `:root{--brand-primary:${c.primary};--brand-accent:${c.accent};--brand-text:${c.text};--brand-light:${c.light};}`;
+const clientConfig = { form: site.form };
+---
+<!doctype html>
+<html lang={site.seo.lang || 'en'}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta name="theme-color" content={c.primary} />
+  <link rel="icon" href="/icons/icon.svg" type="image/svg+xml" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+
+  <meta property="og:type" content={type} />
+  <meta property="og:site_name" content={site.companyName} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  {ogImage && <meta property="og:image" content={ogImage} />}
+  <meta name="twitter:card" content={ogImage ? 'summary_large_image' : 'summary'} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+  <style set:html={cssVars}></style>
+  <script is:inline>document.documentElement.classList.add('js')</script>
+  {jsonLd.map(j => <script type="application/ld+json" set:html={JSON.stringify(j)} />)}
+</head>
+<body id="top" class="font-sans text-brand-charcoal bg-[#fcfcfc] antialiased">
+  <Header />
+  <main>
+    <slot />
+  </main>
+  <Footer />
+  <ContactModal />
+
+  <a href="#top" class="to-top" aria-label="Back to top">
+    <svg viewBox="0 0 48 48" class="prog-ring" aria-hidden="true"><circle cx="24" cy="24" r="21"/><circle id="ringP" cx="24" cy="24" r="21"/></svg>
+    <i class="fas fa-arrow-up relative"></i>
+  </a>
+
+  {site.whatsapp.show && site.whatsapp.number && (
+    <a href={waLink()} target="_blank" rel="noopener" aria-label="WhatsApp"
+       class="fixed bottom-6 right-6 w-14 h-14 bg-green-500 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-green-600 transition-colors z-50 text-3xl">
+      <i class="fab fa-whatsapp"></i>
+    </a>
+  )}
+
+  <script is:inline set:html={`window.SITE=${JSON.stringify(clientConfig)};`}></script>
+  <script is:inline src="/js/site.js"></script>
+</body>
+</html>

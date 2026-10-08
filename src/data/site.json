@@ -1,0 +1,102 @@
+{
+  "siteUrl": "https://klc-website.workers.dev",
+  "companyName": "Kurnia Lestari Capital (M) Sdn Bhd",
+  "shortName": "KLC",
+  "regNo": "1234567-V",
+  "logo": {
+    "image": "",
+    "text": "KLC",
+    "showAccent": true
+  },
+  "colors": {
+    "primary": "#1C2D42",
+    "accent": "#F39C12",
+    "text": "#2C3E50",
+    "light": "#F8F9FA"
+  },
+  "seo": {
+    "title": "Kurnia Lestari Capital (M) Sdn Bhd | Clean Energy Services & Solutions",
+    "description": "KLC delivers solar EPCC, O&M services and environmental consulting for commercial, industrial and utility-scale clean energy projects in Malaysia.",
+    "ogImage": "",
+    "lang": "en"
+  },
+  "nav": [
+    {
+      "label": "About",
+      "url": "/#about",
+      "children": [
+        { "label": "Our Milestones", "url": "/#milestones" },
+        { "label": "Accreditation", "url": "/#accreditation" }
+      ]
+    },
+    {
+      "label": "Service",
+      "url": "/#services",
+      "children": [
+        { "label": "O & M Services", "url": "/#services" },
+        { "label": "EPCC Solutions", "url": "/#services" },
+        { "label": "Environmental Consulting", "url": "/#services" }
+      ]
+    },
+    { "label": "Portfolio", "url": "/#portfolio", "children": [] },
+    { "label": "Articles", "url": "/artikel/", "children": [] }
+  ],
+  "headerButton": "Contact Us",
+  "sharePrice": {
+    "show": false,
+    "label": "Share Price",
+    "price": "RM 1.67",
+    "direction": "up",
+    "change": "+",
+    "updatedAt": "14 Aug 2026, 8:00 am"
+  },
+  "contact": {
+    "phone": "+603-1234 5678",
+    "fax": "+603-1234 5679",
+    "email": "advisory@kurnialestari.com.my",
+    "extraEmails": [
+      { "label": "Marketing", "email": "marketing@kurnialestari.com.my" },
+      { "label": "Investor Relations", "email": "investorrelations@kurnialestari.com.my" }
+    ]
+  },
+  "whatsapp": {
+    "show": true,
+    "number": "60312345678",
+    "message": "Hi KLC, I would like to know more about your solar solutions."
+  },
+  "form": {
+    "scriptUrl": "https://script.google.com/macros/s/AKfycbz45l7sVYTe3oOfTXX6ZQJYf2ee0TXU-q_85Xdh1loJYwQe1Quq82CXUcBmRNlVAC4M/exec",
+    "title": "Submit Message",
+    "submitLabel": "Send Message",
+    "sendingLabel": "Sending...",
+    "successText": "Message sent successfully!",
+    "errorText": "Error. Try Again."
+  },
+  "footer": {
+    "about": "We at KLC believe that renewable energy is the way forward. As we continue to evolve, we strive to provide our customers with the highest-quality sustainable energy solutions in a hassle-free manner.",
+    "enquiryTitle": "General Enquiry",
+    "hqTitle": "Headquarters",
+    "hqAddress": "Level 42, Green Energy Tower,\nJalan Sultan Ismail,\n50250 Kuala Lumpur, Wilayah Persekutuan",
+    "branchesTitle": "Other Branches",
+    "branches": [
+      { "name": "Johor", "address": "No. 52A, Jalan Penjaja Pusat\nKomersial Bentara, 83000 Batu\nPahat, Johor" }
+    ],
+    "servicesTitle": "Our Services",
+    "serviceLinks": [
+      { "label": "Clean Energy Solution", "url": "/#services" },
+      { "label": "Sustainable Energy", "url": "/#services" },
+      { "label": "Environment Consultant", "url": "/#services" }
+    ],
+    "socialTitle": "Our Social Media",
+    "showSdg": true,
+    "sdgText": "In support of the UNSDGs",
+    "copyright": "Copyright © {year} Kurnia Lestari Capital (M) Sdn Bhd. All Rights Reserved."
+  },
+  "socials": [
+    { "platform": "facebook", "url": "#" },
+    { "platform": "instagram", "url": "#" },
+    { "platform": "youtube", "url": "#" },
+    { "platform": "linkedin", "url": "#" },
+    { "platform": "tiktok", "url": "#" }
+  ]
+}

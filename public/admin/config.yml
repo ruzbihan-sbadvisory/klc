@@ -1,0 +1,468 @@
+# Konfigurasi panel admin (Sveltia CMS). base_url ditetapkan automatik dalam admin/index.html.
+# PENTING: tukar "repo" di bawah kepada nama repo GitHub anda (format: username/nama-repo)
+backend:
+  name: github
+  repo: ruzbihan-sbadvisory/klc
+  branch: main
+  auth_scope: repo
+  commit_messages:
+    create: 'CMS: tambah {{collection}} "{{slug}}"'
+    update: 'CMS: kemas kini {{collection}} "{{slug}}"'
+    delete: 'CMS: padam {{collection}} "{{slug}}"'
+    uploadMedia: 'CMS: upload {{path}}'
+    deleteMedia: 'CMS: padam {{path}}'
+
+logo_url: /icons/icon.svg
+show_preview_links: true
+
+media_folder: public/uploads
+public_folder: /uploads
+media_libraries:
+  default:
+    config:
+      max_file_size: 8388608
+      slugify_filename: true
+      transformations:
+        raster_image:
+          format: webp
+          quality: 82
+          width: 1920
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+collections:
+  # ============================ ARTIKEL ============================
+  - name: artikel
+    label: Artikel & Berita
+    label_singular: Artikel
+    icon: article
+    description: Tulis berita syarikat dan artikel SEO. Setiap artikel jadi halaman sendiri di /artikel/. 3 terbaru keluar di bahagian Newsroom halaman utama.
+    folder: src/content/artikel
+    create: true
+    extension: md
+    format: frontmatter
+    slug: '{{slug}}'
+    summary: '{{title}} ({{category}})'
+    sortable_fields: [date, title, category]
+    view_filters:
+      - { label: Berita, field: category, pattern: News }
+      - { label: Artikel, field: category, pattern: Article }
+      - { label: Panduan, field: category, pattern: Guide }
+      - { label: Draf, field: draft, pattern: true }
+    editor:
+      preview: false
+    fields:
+      - label: Tajuk
+        name: title
+        widget: string
+        hint: 'Letak kata kunci utama di awal tajuk. Elok 60 hingga 70 aksara supaya tak terpotong di Google.'
+      - label: Penerangan Google (meta description)
+        name: description
+        widget: text
+        hint: 'Ringkasan bawah tajuk di Google. Mesti 50 hingga 170 aksara.'
+        pattern: ['^[\s\S]{50,170}$', 'Mesti antara 50 hingga 170 aksara.']
+      - label: Tarikh terbit
+        name: date
+        widget: datetime
+        date_format: 'DD/MM/YYYY'
+        time_format: false
+        format: 'YYYY-MM-DD'
+        picker_utc: true
+      - label: Kategori
+        name: category
+        widget: select
+        options: [News, Article, Guide]
+        default: Article
+        hint: 'News = berita syarikat/projek. Article = artikel umum. Guide = panduan.'
+      - { label: Penulis, name: author, widget: string, required: false, hint: 'Pilihan. Contoh: KLC Engineering Team' }
+      - label: Gambar utama
+        name: cover
+        widget: image
+        required: false
+        hint: 'Gambar landskap (melintang) paling sesuai. Dikecilkan automatik semasa upload (maksimum 8 MB).'
+      - { label: Teks alternatif gambar, name: coverAlt, widget: string, required: false, hint: 'Terangkan gambar dalam satu ayat. Bagus untuk SEO.' }
+      - label: Tag
+        name: tags
+        widget: list
+        required: false
+        field: { label: Tag, name: tag, widget: string }
+      - { label: Artikel pilihan, name: featured, widget: boolean, default: false, required: false }
+      - label: Draf (belum terbit)
+        name: draft
+        widget: boolean
+        default: false
+        hint: 'Hidupkan jika belum siap. Draf tak keluar di laman web.'
+      - label: Kandungan
+        name: body
+        widget: markdown
+        hint: 'Guna tajuk H2 untuk setiap bahagian. Untuk butang hubungi, buat pautan ke /#contact (borang akan terbuka).'
+
+  # ============================ TETAPAN ============================
+  - name: tetapan
+    label: Tetapan Laman
+    icon: settings
+    description: Semua teks, gambar, warna, maklumat syarikat dan bahagian halaman utama.
+    editor:
+      preview: false
+    files:
+      # ---------- TETAPAN UMUM ----------
+      - name: site
+        label: Tetapan Umum (Syarikat, Header, Footer, Borang)
+        file: src/data/site.json
+        format: json
+        fields:
+          - label: URL laman web
+            name: siteUrl
+            widget: string
+            hint: 'Contoh: https://www.namadomain.com.my (tanpa / di hujung). Tukar selepas domain disambung. Digunakan untuk sitemap dan SEO.'
+            pattern: ['^https?://[^/\s]+$', 'Mesti bermula https:// dan tanpa / di hujung.']
+          - { label: Nama penuh syarikat, name: companyName, widget: string }
+          - { label: Nama pendek, name: shortName, widget: string, hint: 'Contoh: KLC. Dipakai dalam tajuk tab browser.' }
+          - { label: No. pendaftaran SSM, name: regNo, widget: string, required: false }
+          - label: Logo
+            name: logo
+            widget: object
+            fields:
+              - { label: Gambar logo (pilihan), name: image, widget: image, required: false, hint: 'Kalau kosong, logo teks di bawah digunakan. PNG/SVG latar lutsinar paling cantik.' }
+              - { label: Teks logo, name: text, widget: string }
+              - { label: Tunjuk segi tiga emas sebelah logo teks, name: showAccent, widget: boolean, default: true }
+          - label: Warna jenama
+            name: colors
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Warna utama (biru gelap), name: primary, widget: color }
+              - { label: Warna aksen (emas), name: accent, widget: color }
+              - { label: Warna teks, name: text, widget: color }
+              - { label: Warna latar cerah, name: light, widget: color }
+          - label: SEO halaman utama
+            name: seo
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Tajuk halaman (title), name: title, widget: string }
+              - { label: Penerangan Google, name: description, widget: text, hint: '50 hingga 170 aksara.' }
+              - { label: Gambar kongsi (WhatsApp/Facebook/LinkedIn), name: ogImage, widget: image, required: false, hint: 'Saiz ideal 1200 x 630.' }
+              - label: Bahasa laman
+                name: lang
+                widget: select
+                options: [{ label: English, value: en }, { label: Bahasa Melayu, value: ms }]
+          - label: Menu atas (navigation)
+            name: nav
+            widget: list
+            summary: '{{fields.label}}'
+            hint: 'Pautan dalam halaman guna #: /#services, /#portfolio, /#milestones, /#accreditation, /#newsroom, /artikel/'
+            fields:
+              - { label: Label, name: label, widget: string }
+              - { label: Pautan, name: url, widget: string }
+              - label: Sub-menu (dropdown)
+                name: children
+                widget: list
+                required: false
+                summary: '{{fields.label}}'
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Pautan, name: url, widget: string }
+          - { label: Teks butang header, name: headerButton, widget: string }
+          - label: Harga saham (header)
+            name: sharePrice
+            widget: object
+            collapsed: true
+            hint: 'Hanya untuk syarikat tersenarai di Bursa. Biar OFF untuk Sdn Bhd.'
+            fields:
+              - { label: Tunjuk, name: show, widget: boolean, default: false }
+              - { label: Label, name: label, widget: string }
+              - { label: Harga, name: price, widget: string }
+              - { label: Arah, name: direction, widget: select, options: [{ label: Naik, value: up }, { label: Turun, value: down }] }
+              - { label: Perubahan, name: change, widget: string }
+              - { label: Tarikh/masa kemas kini, name: updatedAt, widget: string }
+          - label: Maklumat hubungan
+            name: contact
+            widget: object
+            fields:
+              - { label: Telefon, name: phone, widget: string }
+              - { label: Faks, name: fax, widget: string, required: false }
+              - { label: Emel utama, name: email, widget: string }
+              - label: Emel lain (contoh Marketing)
+                name: extraEmails
+                widget: list
+                required: false
+                summary: '{{fields.label}}'
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Emel, name: email, widget: string }
+          - label: Butang WhatsApp terapung
+            name: whatsapp
+            widget: object
+            fields:
+              - { label: Tunjuk, name: show, widget: boolean, default: true }
+              - label: Nombor WhatsApp
+                name: number
+                widget: string
+                hint: 'Format antarabangsa tanpa + atau sengkang. Contoh: 60123456789'
+                pattern: ['^60\d{8,10}$', 'Mesti bermula 60 dan hanya nombor.']
+              - { label: Mesej lalai, name: message, widget: string }
+          - label: Borang hubungi (Google Sheets)
+            name: form
+            widget: object
+            collapsed: true
+            fields:
+              - { label: URL Google Apps Script (Web App), name: scriptUrl, widget: string, hint: 'URL yang berakhir dengan /exec. Lihat folder google-apps-script dalam repo.' }
+              - { label: Tajuk borang, name: title, widget: string }
+              - { label: Teks butang hantar, name: submitLabel, widget: string }
+              - { label: Teks semasa menghantar, name: sendingLabel, widget: string }
+              - { label: Mesej berjaya, name: successText, widget: string }
+              - { label: Mesej ralat, name: errorText, widget: string }
+          - label: Footer
+            name: footer
+            widget: object
+            fields:
+              - { label: Perenggan tentang syarikat, name: about, widget: text }
+              - { label: Tajuk bahagian hubungi, name: enquiryTitle, widget: string }
+              - { label: Tajuk ibu pejabat, name: hqTitle, widget: string }
+              - { label: Alamat ibu pejabat, name: hqAddress, widget: text, hint: 'Tekan Enter untuk baris baharu.' }
+              - { label: Tajuk cawangan, name: branchesTitle, widget: string }
+              - label: Cawangan
+                name: branches
+                widget: list
+                required: false
+                summary: '{{fields.name}}'
+                fields:
+                  - { label: Nama cawangan, name: name, widget: string }
+                  - { label: Alamat, name: address, widget: text }
+              - { label: Tajuk servis, name: servicesTitle, widget: string }
+              - label: Pautan servis
+                name: serviceLinks
+                widget: list
+                summary: '{{fields.label}}'
+                fields:
+                  - { label: Label, name: label, widget: string }
+                  - { label: Pautan, name: url, widget: string }
+              - { label: Tajuk media sosial, name: socialTitle, widget: string }
+              - { label: Tunjuk blok UN SDG, name: showSdg, widget: boolean, default: true }
+              - { label: Teks SDG, name: sdgText, widget: string }
+              - { label: Teks copyright, name: copyright, widget: string, hint: '{year} akan ditukar kepada tahun semasa secara automatik.' }
+          - label: Media sosial
+            name: socials
+            widget: list
+            required: false
+            summary: '{{fields.platform}}'
+            fields:
+              - { label: Platform, name: platform, widget: select, options: [facebook, instagram, youtube, linkedin, tiktok, x, whatsapp] }
+              - { label: Pautan, name: url, widget: string }
+
+      # ---------- HALAMAN UTAMA ----------
+      - name: home
+        label: Halaman Utama (semua bahagian)
+        file: src/data/home.json
+        format: json
+        fields:
+          - label: Hero (bahagian paling atas)
+            name: hero
+            widget: object
+            fields:
+              - { label: Tajuk besar, name: title, widget: text, hint: 'Tekan Enter untuk pecah baris.' }
+              - { label: Ayat pengenalan, name: lead, widget: text }
+              - { label: Teks butang, name: ctaLabel, widget: string }
+              - label: Bila butang ditekan
+                name: ctaAction
+                widget: select
+                options: [{ label: Buka borang hubungi, value: form }, { label: Pergi ke pautan, value: link }]
+              - { label: Pautan butang (jika pilih "Pergi ke pautan"), name: ctaUrl, widget: string, required: false }
+              - { label: Gambar latar, name: image, widget: image }
+              - { label: Teks alternatif gambar, name: imageAlt, widget: string }
+              - label: Kad terapung (sebelah kanan, skrin besar sahaja)
+                name: floats
+                widget: list
+                required: false
+                max: 3
+                summary: '{{fields.title}}'
+                hint: 'Kad kecil yang bergerak naik turun di sebelah kanan hero. Maksimum 3. Tak keluar di telefon.'
+                fields:
+                  - { label: Ikon Font Awesome, name: icon, widget: string, hint: 'Contoh: fas fa-solar-panel' }
+                  - { label: Tajuk, name: title, widget: string }
+                  - { label: Teks kecil, name: text, widget: string }
+          - label: Trusted By (logo pelanggan)
+            name: trustedBy
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Tunjuk bahagian ini, name: show, widget: boolean, default: true }
+              - { label: Tajuk, name: title, widget: string }
+              - label: Senarai pelanggan
+                name: items
+                widget: list
+                summary: '{{fields.name}}'
+                fields:
+                  - { label: Nama, name: name, widget: string }
+                  - { label: Logo (pilihan), name: logo, widget: image, required: false, hint: 'Kalau ada logo, ikon dan nama tak dipaparkan.' }
+                  - { label: Ikon Font Awesome, name: icon, widget: string, required: false, hint: 'Contoh: fas fa-bolt. Cari di fontawesome.com/icons' }
+                  - { label: Warna ikon, name: iconColor, widget: color, required: false }
+          - label: Kad statistik (3 kad bawah hero)
+            name: stats
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Tunjuk bahagian ini, name: show, widget: boolean, default: true }
+              - label: Kad
+                name: items
+                widget: list
+                summary: '{{fields.value}} {{fields.label}}'
+                fields:
+                  - { label: Ikon Font Awesome, name: icon, widget: string, hint: 'Contoh: fas fa-chart-line' }
+                  - { label: Nombor, name: value, widget: string }
+                  - { label: Keterangan, name: label, widget: string }
+          - label: Jalur teks bergerak (marquee)
+            name: marquee
+            widget: object
+            collapsed: true
+            hint: 'Jalur teks yang bergerak sendiri. Keluar dua kali: bawah kad statistik (emas) dan atas seruan bertindak (biru).'
+            fields:
+              - { label: Tunjuk, name: show, widget: boolean, default: true }
+              - label: Perkataan
+                name: items
+                widget: list
+                field: { label: Teks, name: text, widget: string }
+          - label: Servis (slider)
+            name: services
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Tunjuk bahagian ini, name: show, widget: boolean, default: true }
+              - { label: Teks kecil atas, name: eyebrow, widget: string }
+              - { label: Tajuk, name: title, widget: string }
+              - { label: Perenggan, name: intro, widget: text }
+              - { label: Teks besar latar (bergerak bila scroll), name: ghostText, widget: string, required: false, hint: 'Teks garis luar besar di belakang. Kosongkan untuk buang.' }
+              - { label: Tukar slide automatik setiap (saat), name: autoSlideSeconds, widget: number, value_type: int, min: 0, max: 30, hint: '0 = tak bertukar sendiri.' }
+              - { label: Teks butang, name: buttonLabel, widget: string }
+              - label: Slide
+                name: slides
+                widget: list
+                summary: '{{fields.title}}'
+                fields:
+                  - { label: Tajuk, name: title, widget: string }
+                  - { label: Ikon Font Awesome, name: icon, widget: string, hint: 'Contoh: fas fa-solar-panel' }
+                  - { label: Keterangan, name: description, widget: text }
+                  - { label: Gambar, name: image, widget: image }
+                  - label: Tag
+                    name: tags
+                    widget: list
+                    summary: '{{fields.text}}'
+                    fields:
+                      - { label: Teks, name: text, widget: string }
+                      - { label: Warna emas (highlight), name: highlight, widget: boolean, default: false }
+                  - { label: Pautan butang (kosong = buka borang), name: buttonUrl, widget: string, required: false }
+          - label: Pencapaian (jalur biru)
+            name: milestones
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Tunjuk bahagian ini, name: show, widget: boolean, default: true }
+              - label: Item
+                name: items
+                widget: list
+                summary: '{{fields.value}}{{fields.suffix}} {{fields.label}}'
+                fields:
+                  - { label: Nombor/teks besar, name: value, widget: string }
+                  - { label: Akhiran (warna emas), name: suffix, widget: string, required: false, hint: 'Contoh: +, yrs, countries' }
+                  - { label: Keterangan, name: label, widget: string }
+          - label: Testimoni
+            name: testimonials
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Tunjuk bahagian ini, name: show, widget: boolean, default: true }
+              - { label: Teks kecil atas, name: eyebrow, widget: string }
+              - { label: Tajuk, name: title, widget: string }
+              - { label: Teks besar latar (bergerak bila scroll), name: ghostText, widget: string, required: false }
+              - label: Testimoni
+                name: items
+                widget: list
+                summary: '{{fields.label}}'
+                fields:
+                  - { label: Bintang (1-5), name: rating, widget: number, value_type: int, min: 1, max: 5, default: 5 }
+                  - { label: Ulasan, name: text, widget: text }
+                  - { label: Nama/industri pelanggan, name: label, widget: string }
+          - label: Portfolio
+            name: portfolio
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Tunjuk bahagian ini, name: show, widget: boolean, default: true }
+              - { label: Teks kecil atas, name: eyebrow, widget: string }
+              - { label: Tajuk, name: title, widget: string }
+              - { label: Teks besar latar (bergerak bila scroll), name: ghostText, widget: string, required: false }
+              - label: Projek utama (gambar besar)
+                name: featured
+                widget: object
+                fields:
+                  - { label: Tajuk, name: title, widget: string }
+                  - { label: Gambar, name: image, widget: image }
+                  - { label: Teks butang, name: buttonLabel, widget: string }
+                  - { label: Pautan (kosong = buka borang), name: url, widget: string, required: false, hint: 'Boleh pautkan ke artikel, contoh /artikel/nama-artikel/' }
+              - label: Gambar kecil (sebelah kanan)
+                name: gallery
+                widget: list
+                max: 3
+                summary: '{{fields.alt}}'
+                fields:
+                  - { label: Gambar, name: image, widget: image }
+                  - { label: Keterangan gambar, name: alt, widget: string }
+          - label: Akreditasi
+            name: accreditation
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Tunjuk bahagian ini, name: show, widget: boolean, default: true }
+              - { label: Tajuk, name: title, widget: string }
+              - { label: Subtajuk, name: subtitle, widget: string }
+              - label: Senarai akreditasi
+                name: items
+                widget: list
+                summary: '{{fields.name}}'
+                fields:
+                  - { label: Nama, name: name, widget: string }
+                  - { label: Logo (pilihan), name: logo, widget: image, required: false }
+                  - { label: Ikon Font Awesome, name: icon, widget: string, required: false }
+                  - { label: Warna ikon, name: iconColor, widget: color, required: false }
+          - label: Newsroom (artikel terbaru)
+            name: newsroom
+            widget: object
+            collapsed: true
+            hint: 'Kandungan diambil automatik dari koleksi Artikel & Berita.'
+            fields:
+              - { label: Tunjuk bahagian ini, name: show, widget: boolean, default: true }
+              - { label: Teks kecil atas, name: eyebrow, widget: string }
+              - { label: Tajuk, name: title, widget: string }
+              - { label: Bilangan artikel dipaparkan, name: count, widget: number, value_type: int, min: 1, max: 9 }
+              - { label: Teks pautan "lihat semua", name: viewAllLabel, widget: string }
+          - label: Seruan bertindak (jalur langit biru)
+            name: cta
+            widget: object
+            collapsed: true
+            fields:
+              - { label: Tunjuk bahagian ini, name: show, widget: boolean, default: true }
+              - { label: Tajuk, name: title, widget: text }
+              - { label: Perenggan, name: text, widget: text }
+              - { label: Teks butang, name: buttonLabel, widget: string }
+              - { label: Gambar latar, name: image, widget: image, required: false }
+
+      # ---------- HALAMAN ARTIKEL ----------
+      - name: articles-page
+        label: Halaman Senarai Artikel
+        file: src/data/articles-page.json
+        format: json
+        fields:
+          - { label: Teks kecil atas, name: eyebrow, widget: string }
+          - { label: Tajuk, name: title, widget: string }
+          - { label: Pengenalan, name: intro, widget: text }
+          - label: Susunan kategori (butang penapis)
+            name: categories
+            widget: list
+            field: { label: Kategori, name: category, widget: string }
+          - { label: Tunjuk kotak hubungi di bawah, name: showCta, widget: boolean, default: true }
+          - { label: Tajuk kotak hubungi, name: ctaTitle, widget: string }
+          - { label: Teks kotak hubungi, name: ctaText, widget: text }
+          - { label: Teks butang, name: ctaButton, widget: string }

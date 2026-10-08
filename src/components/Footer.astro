@@ -1,0 +1,82 @@
+---
+import Logo from './Logo.astro';
+import { site, socialIcon, nl2br } from '../lib';
+const f = site.footer;
+const copyright = f.copyright.replace('{year}', String(new Date().getFullYear()));
+const sdg = ['#e5243b', '#dda63a', '#4c9f38', '#26bde2', '#fd6925', '#0a97d9'];
+---
+<footer class="bg-brand-light pt-20 pb-8 border-t border-gray-200">
+  <div class="w-full max-w-[1400px] mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16" data-alt="up">
+      <div class="lg:pr-8">
+        <div class="mb-4"><Logo variant="footer" /></div>
+        <h3 class="font-bold text-gray-900 text-lg mb-4">{site.companyName}{site.regNo && <> ({site.regNo})</>}</h3>
+        <p class="text-gray-700 text-[14px] leading-relaxed mb-6 font-medium">{f.about}</p>
+
+        <h4 class="font-bold text-gray-900 mb-3">{f.enquiryTitle}</h4>
+        <ul class="text-[14px] text-gray-700 space-y-2 mb-6 font-medium break-words">
+          {site.contact.phone && <li><i class="fas fa-phone mr-2 w-4"></i> Phone : <a href={`tel:${site.contact.phone.replace(/[^\d+]/g, '')}`} class="hover:text-brand-gold">{site.contact.phone}</a></li>}
+          {site.contact.fax && <li><i class="fas fa-fax mr-2 w-4"></i> Fax : {site.contact.fax}</li>}
+          {site.contact.email && <li><i class="fas fa-envelope mr-2 w-4"></i> Email : <a href={`mailto:${site.contact.email}`} class="hover:text-brand-gold">{site.contact.email}</a></li>}
+        </ul>
+
+        {site.contact.extraEmails.map(e => (
+          <>
+            <h4 class="font-bold text-gray-900 mb-1">{e.label} :</h4>
+            <p class="text-[14px] text-gray-700 mb-4 font-medium break-words"><a href={`mailto:${e.email}`} class="hover:text-brand-gold">{e.email}</a></p>
+          </>
+        ))}
+
+        {f.showSdg && (
+          <div class="mt-4">
+            <p class="text-xs text-gray-500 mb-2">{f.sdgText}</p>
+            <div class="flex gap-1">{sdg.map(col => <div class="w-4 h-4" style={`background:${col}`}></div>)}</div>
+          </div>
+        )}
+      </div>
+
+      <div>
+        <h4 class="font-bold text-gray-900 text-lg mb-6">{f.hqTitle}</h4>
+        <p class="text-[14px] text-gray-700 leading-relaxed mb-8 font-medium" set:html={nl2br(f.hqAddress)}></p>
+        {f.branches.length > 0 && (
+          <>
+            <h4 class="font-bold text-gray-900 text-lg mb-4">{f.branchesTitle}</h4>
+            {f.branches.map(b => (
+              <div class="mb-6">
+                <h5 class="font-bold text-gray-800 text-[15px] mb-2">{b.name}</h5>
+                <p class="text-[14px] text-gray-700 leading-relaxed font-medium" set:html={nl2br(b.address)}></p>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+
+      <div>
+        <h4 class="font-bold text-gray-900 text-lg mb-6">{f.servicesTitle}</h4>
+        <ul class="space-y-6">
+          {f.serviceLinks.map(l => (
+            <li><a href={l.url} class="text-[15px] font-bold text-gray-800 hover:text-brand-gold flex items-center"><i class="fas fa-caret-right mr-3 text-brand-gold"></i> {l.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-gray-900 text-lg mb-6">{f.socialTitle}</h4>
+        <div class="flex flex-wrap gap-3">
+          {site.socials.filter(s => s.url).map(s => {
+            const m = socialIcon[s.platform] ?? { icon: 'fas fa-link', bg: '#374151' };
+            return (
+              <a href={s.url} target="_blank" rel="noopener" aria-label={s.platform} class="w-8 h-8 rounded-full text-white flex items-center justify-center hover:opacity-80" style={`background:${m.bg}`}>
+                <i class={`${m.icon} text-sm`}></i>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-300 pt-6 text-center">
+      <p class="text-[12px] text-gray-600 font-medium">{copyright}</p>
+    </div>
+  </div>
+</footer>

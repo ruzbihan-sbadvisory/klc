@@ -1,0 +1,18 @@
+---
+import { site } from '../lib';
+interface Props { variant?: 'header' | 'footer' }
+const { variant = 'header' } = Astro.props;
+const text = site.logo.text || site.shortName;
+---
+{site.logo.image ? (
+  <img src={site.logo.image} alt={site.companyName} class={variant === 'header' ? 'h-10 w-auto' : 'h-12 w-auto'} />
+) : (
+  <span class:list={['font-extrabold tracking-tighter flex items-center', variant === 'header' ? 'text-3xl' : 'text-4xl']}>
+    {variant === 'footer'
+      ? <><span class="text-brand-gold">{text.slice(0, 1)}</span><span class="text-brand-blue">{text.slice(1)}</span></>
+      : <span class="text-brand-blue">{text}</span>}
+    {variant === 'header' && site.logo.showAccent && (
+      <svg class="w-6 h-6 text-brand-gold ml-1 -mt-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L2 22h20L12 2zm0 4.5l5.5 11h-11L12 6.5z"/></svg>
+    )}
+  </span>
+)}

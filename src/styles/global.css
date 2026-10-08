@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+/* Warna jenama datang dari Tetapan Umum (CMS) melalui pembolehubah CSS dalam Base.astro */
+@theme inline {
+  --color-brand-blue: var(--brand-primary);
+  --color-brand-gold: var(--brand-accent);
+  --color-brand-charcoal: var(--brand-text);
+  --color-brand-light: var(--brand-light);
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
+html, body { overflow-x: clip; }
+body { overflow-x: hidden; }
+@supports (overflow: clip) { body { overflow-x: clip; } }
+
+.accent-underline { position: relative; display: inline-block; }
+.accent-underline::after {
+  content: ''; position: absolute; left: 0; bottom: -12px;
+  width: 60%; height: 4px; background-color: var(--brand-accent);
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--brand-light); }
+::-webkit-scrollbar-thumb { background: var(--brand-primary); border-radius: 4px; }
+
+/* Dropdown nav */
+.nav-item:hover .nav-menu, .nav-item:focus-within .nav-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+
+/* Kandungan artikel (markdown) */
+.prose-klc { color: #374151; font-size: 1.0625rem; line-height: 1.8; }
+.prose-klc > * + * { margin-top: 1.25em; }
+.prose-klc h2 { font-size: 1.75rem; font-weight: 700; color: #111827; margin-top: 2em; line-height: 1.3; }
+.prose-klc h3 { font-size: 1.35rem; font-weight: 700; color: #111827; margin-top: 1.6em; }
+.prose-klc a { color: var(--brand-primary); text-decoration: underline; text-decoration-color: var(--brand-accent); text-underline-offset: 3px; font-weight: 600; }
+.prose-klc ul { list-style: disc; padding-left: 1.5em; }
+.prose-klc ol { list-style: decimal; padding-left: 1.5em; }
+.prose-klc li + li { margin-top: .4em; }
+.prose-klc blockquote { border-left: 4px solid var(--brand-accent); padding: .25em 0 .25em 1.25em; font-style: italic; color: #4b5563; }
+.prose-klc img { border-radius: 1rem; width: 100%; height: auto; }
+.prose-klc table { width: 100%; border-collapse: collapse; font-size: .95rem; display: block; overflow-x: auto; }
+.prose-klc th, .prose-klc td { border: 1px solid #e5e7eb; padding: .6em .8em; text-align: left; }
+.prose-klc th { background: var(--brand-light); font-weight: 700; }
+.prose-klc code { background: #f3f4f6; padding: .1em .35em; border-radius: .3em; font-size: .9em; }
+.prose-klc strong { color: #111827; }
+
+/* =================================================================
+   MOTION (diport dari corak ammartraveldraft)
+   ================================================================= */
+:root { --ease: cubic-bezier(.2,.7,.1,1); }
+
+/* Header bayang bila scroll */
+.site-header { transition: box-shadow .3s, background-color .3s; }
+.site-header.scrolled { box-shadow: 0 6px 30px -12px rgba(0,0,0,.25); background: rgba(255,255,255,.94); backdrop-filter: saturate(1.4) blur(10px); -webkit-backdrop-filter: saturate(1.4) blur(10px); }
+
+/* Garis bawah nav (hover + aktif) */
+.nav-link { position: relative; }
+.nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: -6px; height: 2px; background: var(--brand-accent); transform: scaleX(0); transform-origin: right; transition: transform .3s var(--ease); }
+.nav-item:hover .nav-link::after, .nav-link.on::after { transform: scaleX(1); transform-origin: left; }
+.nav-link.on { color: var(--brand-accent); }
+
+/* Animasi masuk semasa scroll */
+.js [data-anim] { opacity: 0; transition: opacity .9s var(--ease), transform 1s var(--ease); transition-delay: var(--d, 0s); will-change: transform, opacity; }
+.js [data-anim=left] { transform: translateX(-80px); }
+.js [data-anim=right] { transform: translateX(80px); }
+.js [data-anim=up] { transform: translateY(46px); }
+.js [data-anim=zoom] { transform: scale(.94); }
+.js [data-anim].in { opacity: 1; transform: none; }
+
+/* Kad terapung di hero */
+.float-card { display: flex; align-items: center; gap: 12px; background: #fff; color: #111827; padding: 12px 16px; border-radius: 16px; box-shadow: 0 18px 40px -14px rgba(0,0,0,.45); animation: float 6s ease-in-out infinite alternate; max-width: 250px; }
+.float-card:nth-child(2) { animation-delay: -2s; }
+.float-card:nth-child(3) { animation-delay: -4s; }
+.float-card .fc-ic { flex: none; width: 40px; height: 40px; border-radius: 50%; background: var(--brand-accent); color: #fff; display: grid; place-items: center; }
+@keyframes float { from { transform: translateY(-6px); } to { transform: translateY(8px); } }
+
+/* Parallax gambar hero */
+.hero-img { transform: translateY(var(--py, 0px)) scale(1.06); transition: transform .1s linear; }
+
+/* Marquee */
+.band { background: var(--brand-accent); color: #fff; overflow: hidden; padding: 16px 0; white-space: nowrap; }
+.band.dark { background: var(--brand-primary); color: var(--brand-accent); }
+.track { display: flex; align-items: center; gap: 34px; padding-right: 34px; width: max-content; animation: slide 36s linear infinite; }
+.track.rev { animation-direction: reverse; }
+.track span { font-weight: 800; font-size: clamp(1rem, 2.2vw, 1.35rem); letter-spacing: .02em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 34px; }
+.track span::after { content: "✦"; font-size: .8em; opacity: .7; }
+@keyframes slide { to { transform: translateX(-50%); } }
+
+/* Teks ghost besar yang bergerak bila scroll */
+.ghost-wrap { position: relative; overflow: hidden; }
+.ghost-text { position: absolute; top: 0; left: 50%; margin: 0; white-space: nowrap; pointer-events: none; user-select: none; z-index: 0;
+  font-weight: 900; font-size: clamp(5rem, 15vw, 13rem); line-height: 1; letter-spacing: -.04em;
+  color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--brand-primary) 14%, transparent);
+  transform: translateX(calc(-50% + var(--tx, 0px))); }
+.ghost-text.on-dark { -webkit-text-stroke-color: rgba(255,255,255,.12); }
+.ghost-wrap > *:not(.ghost-text) { position: relative; z-index: 1; }
+
+/* Kad dengan sapuan warna bila hover */
+.sweep { position: relative; overflow: hidden; isolation: isolate; transition: transform .4s var(--ease), box-shadow .4s, border-color .3s, color .3s; }
+.sweep::before { content: ""; position: absolute; inset: 0; background: var(--brand-accent); transform: translateX(-101%); transition: transform .55s var(--ease); z-index: -1; }
+.sweep:hover::before, .sweep:focus-within::before { transform: none; }
+.sweep:hover { transform: translateY(-5px); box-shadow: 0 24px 40px -22px rgba(0,0,0,.35); }
+.sweep:hover, .sweep:hover * { color: #fff !important; }
+.sweep .sw-ic { transition: transform .5s var(--ease); }
+.sweep:hover .sw-ic { transform: rotate(-10deg) scale(1.08); }
+
+/* Butang ke atas dengan ring progress */
+.to-top { position: fixed; right: 26px; bottom: 96px; width: 50px; height: 50px; border-radius: 50%; background: #fff; color: var(--brand-primary); display: grid; place-items: center; z-index: 45; box-shadow: 0 10px 30px -8px rgba(0,0,0,.4); opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity .3s, transform .3s; }
+.to-top.show { opacity: 1; transform: none; pointer-events: auto; }
+.to-top .prog-ring { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.to-top .prog-ring circle { fill: none; stroke-width: 2.5; }
+.to-top .prog-ring circle:first-child { stroke: #e5e7eb; }
+.to-top .prog-ring circle:last-child { stroke: var(--brand-accent); stroke-dasharray: 131.95; stroke-dashoffset: 131.95; stroke-linecap: round; }
+
+/* Menu skrin penuh (telefon) */
+.fmenu { position: fixed; inset: 0; z-index: 100; visibility: hidden; transition: visibility 0s .9s; }
+.fmenu.open { visibility: visible; transition-delay: 0s; }
+.fmenu::before { content: ""; position: absolute; inset: 0; background: var(--brand-accent); clip-path: inset(0 100% 0 0); transition: clip-path .7s var(--ease); }
+.fmenu-in { position: absolute; inset: 0; background: var(--brand-primary); color: #fff; clip-path: inset(0 100% 0 0); transition: clip-path .7s var(--ease) .12s; overflow: auto; padding: 96px 28px 40px; display: flex; flex-direction: column; justify-content: center; }
+.fmenu.open::before, .fmenu.open .fmenu-in { clip-path: inset(0 0 0 0); }
+.fmenu-close { position: absolute; top: 18px; right: 18px; width: 50px; height: 50px; border-radius: 50%; background: #fff; color: var(--brand-primary); display: grid; place-items: center; font-size: 1.3rem; transition: transform .35s var(--ease); }
+.fmenu-close:hover { transform: rotate(90deg); }
+.fmenu-nav > * { opacity: 0; transform: translateX(-40px); transition: opacity .5s, transform .6s var(--ease); }
+.fmenu.open .fmenu-nav > * { opacity: 1; transform: none; }
+.fmenu.open .fmenu-nav > *:nth-child(1) { transition-delay: .35s; }
+.fmenu.open .fmenu-nav > *:nth-child(2) { transition-delay: .42s; }
+.fmenu.open .fmenu-nav > *:nth-child(3) { transition-delay: .49s; }
+.fmenu.open .fmenu-nav > *:nth-child(4) { transition-delay: .56s; }
+.fmenu.open .fmenu-nav > *:nth-child(5) { transition-delay: .63s; }
+.fmenu.open .fmenu-nav > *:nth-child(6) { transition-delay: .7s; }
+.fmenu.open .fmenu-nav > *:nth-child(7) { transition-delay: .77s; }
+.fmenu.open .fmenu-nav > *:nth-child(n+8) { transition-delay: .84s; }
+.fmenu-link { font-size: clamp(1.8rem, 7vw, 3rem); font-weight: 800; letter-spacing: -.03em; display: flex; align-items: baseline; gap: 14px; padding: 4px 0; transition: color .25s, padding .3s; }
+.fmenu-link small { font-size: .9rem; color: var(--brand-accent); font-weight: 700; }
+.fmenu-link:hover { color: var(--brand-accent); padding-left: 10px; }
+
+/* Modal pop */
+.modal-pop { animation: pop .4s var(--ease); }
+@keyframes pop { from { opacity: 0; transform: translateY(30px) scale(.97); } to { opacity: 1; transform: none; } }
+
+/* Hormati tetapan "kurangkan animasi" */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js [data-anim] { opacity: 1; transform: none; transition: none; }
+  .track, .float-card, .modal-pop { animation: none; }
+  .hero-img { transform: scale(1.06); }
+  .fmenu::before, .fmenu-in, .fmenu-nav > * { transition-duration: .01s; transition-delay: 0s !important; }
+}

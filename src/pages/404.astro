@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../lib';
+---
+<Base title={`Page not found | ${site.shortName}`} description="The page you are looking for does not exist.">
+  <section class="pt-40 pb-32 text-center px-6">
+    <p class="text-7xl font-black text-brand-gold mb-4">404</p>
+    <h1 class="text-3xl font-bold text-gray-900 mb-4">Page not found</h1>
+    <p class="text-gray-600 mb-8">The page may have been moved or no longer exists.</p>
+    <a href="/" class="bg-brand-blue text-white px-8 py-3 rounded-full font-bold inline-block">Back to home</a>
+  </section>
+</Base>

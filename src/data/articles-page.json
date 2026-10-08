@@ -1,0 +1,10 @@
+{
+  "eyebrow": "Newsroom",
+  "title": "News & Articles",
+  "intro": "Project updates, company news and practical guides on solar, O&M and clean energy.",
+  "categories": ["News", "Article", "Guide"],
+  "showCta": true,
+  "ctaTitle": "Planning a solar project?",
+  "ctaText": "Talk to our team for a free consultation on EPCC, O&M or ESG reporting.",
+  "ctaButton": "Contact Us"
+}

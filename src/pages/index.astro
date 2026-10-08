@@ -1,0 +1,256 @@
+---
+import Base from '../layouts/Base.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { site, home, abs, getArticles, nl2br } from '../lib';
+
+const h = home;
+const latest = (await getArticles()).slice(0, h.newsroom.count || 3);
+const jsonLd = [{
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.companyName,
+  url: abs('/'),
+  email: site.contact.email,
+  telephone: site.contact.phone,
+  address: { '@type': 'PostalAddress', streetAddress: site.footer.hqAddress.replace(/\n/g, ' '), addressCountry: 'MY' },
+  sameAs: site.socials.map(s => s.url).filter(u => u && u !== '#')
+}];
+const stars = (n: number) => Array.from({ length: Math.max(0, Math.min(5, n || 5)) });
+---
+<Base jsonLd={jsonLd}>
+  <!-- Hero -->
+  <section class="relative pt-20 pb-48 lg:pb-64 bg-brand-blue">
+    <div class="absolute inset-0 w-full h-full pt-20 overflow-hidden">
+      {h.hero.image && <img src={h.hero.image} alt={h.hero.imageAlt} class="hero-img w-full h-full object-cover" fetchpriority="high" data-parallax-img />}
+      <div class="absolute inset-0" style="background:linear-gradient(to right,var(--brand-primary),color-mix(in srgb,var(--brand-primary) 80%,transparent),transparent)"></div>
+    </div>
+    <div class="relative w-full max-w-[1400px] mx-auto px-6 pt-24 lg:pt-32">
+      <div class="flex items-center justify-between gap-10">
+      <div class="max-w-2xl">
+        <h1 data-anim="left" class="text-4xl md:text-5xl lg:text-[56px] font-bold text-white leading-[1.1] mb-6" set:html={nl2br(h.hero.title)}></h1>
+        <p data-anim="left" style="--d:.12s" class="text-[16px] md:text-[18px] text-gray-200 mb-10 leading-relaxed font-light max-w-xl">{h.hero.lead}</p>
+        {h.hero.ctaLabel && (
+          <a data-anim="up" style="--d:.24s" href={h.hero.ctaAction === 'link' && h.hero.ctaUrl ? h.hero.ctaUrl : '#contact'} data-open-form={h.hero.ctaAction === 'link' && h.hero.ctaUrl ? undefined : ''}
+             class="inline-flex items-center text-white text-lg font-bold hover:text-brand-gold transition-colors group">
+            {h.hero.ctaLabel}
+            <i class="fas fa-arrow-up-right-from-square ml-3 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"></i>
+          </a>
+        )}
+      </div>
+      {h.hero.floats?.length > 0 && (
+        <div class="hidden xl:flex flex-col gap-5 items-end pr-4" data-anim="right" style="--d:.3s">
+          {h.hero.floats.map((f, i) => (
+            <div class="float-card" style={`margin-right:${[0, 70, 20][i % 3]}px`}>
+              <span class="fc-ic"><i class={f.icon}></i></span>
+              <span class="leading-tight"><b class="block text-[15px]">{f.title}</b><span class="text-xs text-gray-500">{f.text}</span></span>
+            </div>
+          ))}
+        </div>
+      )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Trusted by + stats -->
+  <section id="about" class="relative z-10 -mt-24 lg:-mt-32 w-full max-w-[1400px] mx-auto px-6 flex flex-col items-center">
+    {h.trustedBy.show && (
+      <div data-anim="up" class="w-full bg-white rounded-2xl shadow-card py-6 px-8 mb-8 flex flex-col items-center">
+        <p class="text-sm font-medium text-gray-500 mb-6">{h.trustedBy.title}</p>
+        <div class="flex flex-wrap justify-center items-center gap-8 lg:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+          {h.trustedBy.items.map(t => t.logo
+            ? <img src={t.logo} alt={t.name} class="h-10 w-auto object-contain" loading="lazy" />
+            : <div class="flex items-center gap-2"><i class={`${t.icon} text-3xl`} style={`color:${t.iconColor}`}></i><span class="font-bold text-xl uppercase tracking-tighter">{t.name}</span></div>)}
+        </div>
+      </div>
+    )}
+    {h.stats.show && (
+      <div class="w-full grid grid-cols-1 md:grid-cols-3 gap-6" data-alt="up">
+        {h.stats.items.map(s => (
+          <div class="sweep bg-white rounded-2xl shadow-card p-8 flex items-start gap-4">
+            <div class="sw-ic text-brand-charcoal text-3xl mt-1"><i class={s.icon}></i></div>
+            <div>
+              <h3 class="text-3xl font-bold text-brand-charcoal mb-1">{s.value}</h3>
+              <p class="text-sm text-gray-600 font-medium mt-1">{s.label}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
+  </section>
+
+  <!-- Marquee -->
+  {h.marquee?.show && h.marquee.items?.length > 0 && (
+    <div class="overflow-hidden pt-20 pb-2"><div class="band -rotate-1 scale-[1.03]" aria-hidden="true"><div class="track" data-marquee>{h.marquee.items.map(t => <span>{t}</span>)}</div></div></div>
+  )}
+
+  <!-- Services carousel -->
+  {h.services.show && (
+    <section id="services" class="ghost-wrap pt-24 pb-24">
+      {h.services.ghostText && <p class="ghost-text" aria-hidden="true" data-px="-1">{h.services.ghostText}</p>}
+      <div class="w-full max-w-[1400px] mx-auto px-6">
+      <div class="mb-12">
+        <h4 data-anim="left" class="text-lg font-semibold text-gray-800 mb-2">{h.services.eyebrow}</h4>
+        <h2 data-anim="left" style="--d:.08s" class="text-4xl md:text-5xl font-bold text-black accent-underline pb-4 mb-6 tracking-tight">{h.services.title}</h2>
+        <p data-anim="up" style="--d:.16s" class="text-gray-600 max-w-5xl text-[16px] leading-relaxed mt-6">{h.services.intro}</p>
+      </div>
+
+      <div data-anim="zoom" data-slider data-interval={h.services.autoSlideSeconds}>
+        <div class="relative w-full rounded-[2rem] overflow-hidden shadow-2xl h-[560px] md:h-[500px]">
+          <div data-track class="flex w-full h-full transition-transform duration-500 ease-in-out">
+            {h.services.slides.map((s, i) => (
+              <div class="min-w-full h-full relative flex-shrink-0">
+                {s.image && <img src={s.image} alt={s.title} class="absolute inset-0 w-full h-full object-cover" loading={i === 0 ? 'eager' : 'lazy'} />}
+                <div class="absolute inset-0" style="background:linear-gradient(to right,color-mix(in srgb,var(--brand-primary) 93%,transparent),color-mix(in srgb,var(--brand-primary) 60%,transparent),transparent)"></div>
+                <div class="relative h-full flex flex-col justify-center p-8 md:p-12 lg:p-20">
+                  <div class="w-14 h-14 bg-brand-gold rounded-full flex items-center justify-center text-white text-xl mb-8 shadow-lg"><i class={s.icon}></i></div>
+                  <h3 class="text-3xl md:text-5xl font-bold text-white font-serif tracking-wide mb-4">{s.title}</h3>
+                  <p class="text-gray-200 text-base md:text-lg max-w-xl mb-8 font-light">{s.description}</p>
+                  <div class="flex flex-wrap gap-3 mb-10">
+                    {s.tags.map(t => (
+                      <span class:list={['px-5 py-2 rounded-full border backdrop-blur-sm text-sm font-medium', t.highlight ? 'border-brand-gold text-brand-gold bg-brand-gold/10' : 'border-gray-400 text-white bg-white/10']}>{t.text}</span>
+                    ))}
+                  </div>
+                  <div class="absolute right-12 top-1/2 -translate-y-1/2 text-[180px] font-serif text-white/10 pointer-events-none hidden md:block">{String(i + 1).padStart(2, '0')}</div>
+                  <div class="md:absolute md:bottom-12 md:right-12 z-20">
+                    {s.buttonUrl
+                      ? <a href={s.buttonUrl} class="bg-brand-gold text-white px-8 py-4 rounded-full font-bold hover:opacity-90 transition-opacity inline-flex items-center shadow-lg">{h.services.buttonLabel} <i class="fas fa-arrow-right ml-2"></i></a>
+                      : <button type="button" data-open-form class="bg-brand-gold text-white px-8 py-4 rounded-full font-bold hover:opacity-90 transition-opacity inline-flex items-center shadow-lg">{h.services.buttonLabel} <i class="fas fa-arrow-right ml-2"></i></button>}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {h.services.slides.length > 1 && (
+          <div class="flex justify-center mt-8">
+            <div class="bg-brand-blue rounded-full px-4 py-2 flex items-center gap-4 shadow-md">
+              <button type="button" data-prev aria-label="Previous" class="w-10 h-10 rounded-full bg-white text-brand-blue flex items-center justify-center hover:bg-gray-100 transition"><i class="fas fa-chevron-left text-sm"></i></button>
+              {h.services.slides.map((_, i) => (
+                <button type="button" data-dot aria-label={`Slide ${i + 1}`} class:list={['h-2 rounded-full cursor-pointer transition-all duration-300', i === 0 ? 'w-8 bg-brand-gold' : 'w-2 bg-white/40']}></button>
+              ))}
+              <button type="button" data-next aria-label="Next" class="w-10 h-10 rounded-full bg-white/20 text-white flex items-center justify-center hover:bg-white/30 transition"><i class="fas fa-chevron-right text-sm"></i></button>
+            </div>
+          </div>
+        )}
+      </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Milestones -->
+  {h.milestones.show && (
+    <section id="milestones" class="w-full max-w-[1400px] mx-auto px-6 mb-24">
+      <div data-anim="up" class="bg-brand-blue rounded-3xl py-12 px-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10" style="background-image:radial-gradient(#fff 2px,transparent 2px);background-size:30px 30px;"></div>
+        <div class="relative grid grid-cols-2 md:grid-cols-4 gap-y-10 text-center" data-alt="up">
+          {h.milestones.items.map((m, i) => (
+            <div class:list={['px-2', i > 0 && 'md:border-l md:border-white/20', i % 2 === 1 && 'border-l border-white/20']}>
+              <h3 class="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2 break-words">{m.value}{m.suffix && <span class="text-brand-gold text-xl md:text-2xl ml-1 font-normal">{m.suffix}</span>}</h3>
+              <p class="text-white/90 text-sm font-medium">{m.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Testimonials -->
+  {h.testimonials.show && (
+    <section class="ghost-wrap py-12 mb-24">
+      {h.testimonials.ghostText && <p class="ghost-text" aria-hidden="true" data-px="1">{h.testimonials.ghostText}</p>}
+      <div class="w-full max-w-[1400px] mx-auto px-6">
+      <h4 data-anim="left" class="text-xl font-bold text-gray-900 mb-2">{h.testimonials.eyebrow}</h4>
+      <h2 data-anim="left" style="--d:.08s" class="text-4xl md:text-5xl font-bold text-black tracking-tight mb-16">{h.testimonials.title}</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10" data-alt>
+        {h.testimonials.items.map(t => (
+          <div class="sweep bg-white rounded-2xl border border-gray-100 shadow-soft p-8 md:p-10">
+            <div class="flex text-brand-gold mb-6 text-xl space-x-1" aria-label={`${t.rating} stars`}>{stars(t.rating).map(() => <i class="fas fa-star"></i>)}</div>
+            <p class="text-gray-700 text-lg leading-relaxed mb-8">{t.text}</p>
+            <div class="inline-block border border-current rounded-full px-6 py-2 text-sm font-semibold text-gray-800 uppercase tracking-wide">{t.label}</div>
+          </div>
+        ))}
+      </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Portfolio -->
+  {h.portfolio.show && (
+    <section id="portfolio" class="ghost-wrap pt-10 mb-24">
+      {h.portfolio.ghostText && <p class="ghost-text" aria-hidden="true" data-px="-1">{h.portfolio.ghostText}</p>}
+      <div class="w-full max-w-[1400px] mx-auto px-6">
+      <h4 data-anim="left" class="text-xl font-bold text-gray-900 mb-2">{h.portfolio.eyebrow}</h4>
+      <h2 data-anim="left" style="--d:.08s" class="text-4xl md:text-5xl font-bold text-black tracking-tight mb-10">{h.portfolio.title}</h2>
+      <div data-anim="up" class="flex flex-col md:flex-row rounded-3xl overflow-hidden shadow-xl md:h-[450px]">
+        <a href={h.portfolio.featured.url || '#contact'} data-open-form={h.portfolio.featured.url ? undefined : ''} class="relative w-full md:w-3/5 h-[320px] md:h-full group block overflow-hidden">
+          <img src={h.portfolio.featured.image} alt={h.portfolio.featured.title} loading="lazy" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+          <div class="absolute bottom-8 left-8 md:bottom-10 md:left-10">
+            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">{h.portfolio.featured.title}</h3>
+            <span class="bg-brand-gold text-white px-6 py-2.5 rounded text-sm font-bold inline-block">{h.portfolio.featured.buttonLabel}</span>
+          </div>
+        </a>
+        <div class="w-full md:w-2/5 flex h-[220px] md:h-full">
+          {h.portfolio.gallery.map((g, i) => (
+            <div class:list={['flex-1 h-full overflow-hidden', i > 0 && 'border-l-2 border-white']}>
+              <img src={g.image} alt={g.alt} loading="lazy" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
+            </div>
+          ))}
+        </div>
+      </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Accreditation -->
+  {h.accreditation.show && (
+    <section id="accreditation" class="w-full max-w-[1400px] mx-auto px-6 mb-32">
+      <div class="flex flex-col md:flex-row items-center gap-12">
+        <h2 data-anim="left" class="text-3xl md:text-[40px] font-bold text-black leading-tight md:whitespace-nowrap text-center md:text-left">{h.accreditation.title}<br /><span class="text-xl md:text-2xl text-gray-500 font-normal">{h.accreditation.subtitle}</span></h2>
+        <div class="flex flex-wrap justify-center md:justify-between items-center w-full gap-8 opacity-80" data-alt>
+          {h.accreditation.items.map(a => (
+            <div class="flex flex-col items-center max-w-[110px] text-center transition-transform duration-300 hover:-translate-y-1 hover:scale-110">
+              {a.logo ? <img src={a.logo} alt={a.name} class="h-14 w-auto object-contain mb-2" loading="lazy" /> : <i class={`${a.icon} text-5xl mb-2`} style={`color:${a.iconColor}`}></i>}
+              <span class="text-xs font-bold uppercase">{a.name}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- Newsroom (artikel terbaru) -->
+  {h.newsroom.show && latest.length > 0 && (
+    <section id="newsroom" class="w-full max-w-[1400px] mx-auto px-6 mb-32 bg-gray-50/50 py-16 rounded-3xl">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12">
+        <div data-anim="left">
+          <h4 class="text-xl font-bold text-gray-900 mb-2">{h.newsroom.eyebrow}</h4>
+          <h2 class="text-4xl md:text-5xl font-bold text-black tracking-tight">{h.newsroom.title}</h2>
+        </div>
+        <a data-anim="right" href="/artikel/" class="group font-semibold text-brand-blue hover:text-brand-gold whitespace-nowrap">{h.newsroom.viewAllLabel} <i class="fas fa-arrow-right ml-1 transition-transform group-hover:translate-x-1"></i></a>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8" data-alt="up">
+        {latest.map(p => <ArticleCard post={p} />)}
+      </div>
+    </section>
+  )}
+
+  {h.marquee?.show && h.marquee.items?.length > 0 && (
+    <div class="band dark" aria-hidden="true"><div class="track rev" data-marquee>{h.marquee.items.map(t => <span>{t}</span>)}</div></div>
+  )}
+
+  <!-- CTA -->
+  {h.cta.show && (
+    <section class="relative py-24 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-[#4ea5d9] to-[#2575a7]"></div>
+      {h.cta.image && <img src={h.cta.image} class="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-overlay" alt="" loading="lazy" />}
+      <div class="relative w-full max-w-[1400px] mx-auto px-6">
+        <h2 data-anim="left" class="text-4xl md:text-5xl font-black text-white mb-6 leading-tight drop-shadow-md" set:html={nl2br(h.cta.title)}></h2>
+        <p data-anim="left" style="--d:.1s" class="text-white text-lg max-w-lg mb-10 drop-shadow-md font-medium">{h.cta.text}</p>
+        <button data-anim="up" style="--d:.2s" type="button" data-open-form class="group bg-white text-brand-charcoal px-8 py-3.5 rounded font-bold hover:bg-gray-100 transition-colors shadow-lg inline-flex items-center">
+          {h.cta.buttonLabel} <i class="fas fa-arrow-right ml-3"></i>
+        </button>
+      </div>
+    </section>
+  )}
+</Base>

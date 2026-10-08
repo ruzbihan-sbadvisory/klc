@@ -1,0 +1,292 @@
+{
+  "hero": {
+    "title": "Clean Energy Services &\nSolutions Provider",
+    "lead": "Delivering innovative and comprehensive clean energy solutions, including solar, energy efficiency, and environmental consultancy, to meet diverse energy needs and drive sustainable development.",
+    "ctaLabel": "Get Your Free Consultation Now",
+    "ctaAction": "form",
+    "ctaUrl": "",
+    "image": "https://images.unsplash.com/photo-1508514177221-188b1c77eca2?auto=format&fit=crop&w=1920&q=80",
+    "imageAlt": "Solar engineers inspecting a solar farm",
+    "floats": [
+      {
+        "icon": "fas fa-solar-panel",
+        "title": "700+ MWp",
+        "text": "Project capacity delivered"
+      },
+      {
+        "icon": "fas fa-headset",
+        "title": "24/7 Monitoring",
+        "text": "O&M rapid response"
+      },
+      {
+        "icon": "fas fa-certificate",
+        "title": "ISO 9001:2015",
+        "text": "Certified quality"
+      }
+    ]
+  },
+  "trustedBy": {
+    "show": true,
+    "title": "Trusted By :",
+    "items": [
+      {
+        "name": "Tenaga",
+        "logo": "",
+        "icon": "fas fa-bolt",
+        "iconColor": "#dc2626"
+      },
+      {
+        "name": "Sime Darby",
+        "logo": "",
+        "icon": "fas fa-industry",
+        "iconColor": "#374151"
+      },
+      {
+        "name": "Petronas",
+        "logo": "",
+        "icon": "fas fa-leaf",
+        "iconColor": "#16a34a"
+      },
+      {
+        "name": "Sunway",
+        "logo": "",
+        "icon": "fas fa-building",
+        "iconColor": "#1e40af"
+      },
+      {
+        "name": "KLK",
+        "logo": "",
+        "icon": "fas fa-globe",
+        "iconColor": "#1C2D42"
+      }
+    ]
+  },
+  "stats": {
+    "show": true,
+    "items": [
+      {
+        "icon": "fas fa-chart-line",
+        "value": "700+",
+        "label": "MWp Project Capacity"
+      },
+      {
+        "icon": "fas fa-hand-holding-heart",
+        "value": "43.8Mil+",
+        "label": "Equivalent to the number of trees planted annually"
+      },
+      {
+        "icon": "fas fa-cloud-sun",
+        "value": "700,000+",
+        "label": "Tonne CO2e Avoidance Annually"
+      }
+    ]
+  },
+  "marquee": {
+    "show": true,
+    "items": [
+      "Solar EPCC",
+      "O & M Services",
+      "Large Scale Solar",
+      "Commercial Rooftop",
+      "ESG Advisory",
+      "Carbon Audit",
+      "Energy Efficiency"
+    ]
+  },
+  "services": {
+    "show": true,
+    "eyebrow": "Our Services And Solutions",
+    "title": "Why Choose Us",
+    "intro": "KLC has installed thousands of solar panels and clean energy systems across the region. Backed by comprehensive warranties and after-sales support, this provides you with the peace of mind you'll get from dealing with a leading renewable energy provider.",
+    "autoSlideSeconds": 6,
+    "buttonLabel": "Find out more",
+    "slides": [
+      {
+        "title": "O & M Services",
+        "icon": "fas fa-wrench",
+        "description": "Comprehensive O&M services with real-time monitoring, preventive maintenance, and rapid response to ensure peak system performance.",
+        "image": "https://images.unsplash.com/photo-1581092160562-40aa20e6e61f?auto=format&fit=crop&w=1400&q=80",
+        "tags": [
+          {
+            "text": "Monitoring",
+            "highlight": false
+          },
+          {
+            "text": "Preventive Care",
+            "highlight": true
+          },
+          {
+            "text": "Performance",
+            "highlight": false
+          }
+        ],
+        "buttonUrl": ""
+      },
+      {
+        "title": "EPCC Solutions",
+        "icon": "fas fa-solar-panel",
+        "description": "End-to-end Engineering, Procurement, Construction, and Commissioning for large scale commercial and utility solar farms.",
+        "image": "https://images.unsplash.com/photo-1508514177221-188b1c77eca2?auto=format&fit=crop&w=1400&q=80",
+        "tags": [
+          {
+            "text": "Engineering",
+            "highlight": true
+          },
+          {
+            "text": "Construction",
+            "highlight": false
+          },
+          {
+            "text": "Turnkey",
+            "highlight": false
+          }
+        ],
+        "buttonUrl": ""
+      },
+      {
+        "title": "Environmental Consulting",
+        "icon": "fas fa-leaf",
+        "description": "Strategic ESG advisory, carbon avoidance calculations, and sustainability reporting for corporate energy transition goals.",
+        "image": "https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=1400&q=80",
+        "tags": [
+          {
+            "text": "ESG Advisory",
+            "highlight": false
+          },
+          {
+            "text": "Carbon Audit",
+            "highlight": false
+          },
+          {
+            "text": "Sustainability",
+            "highlight": true
+          }
+        ],
+        "buttonUrl": ""
+      }
+    ],
+    "ghostText": "CLEAN ENERGY"
+  },
+  "milestones": {
+    "show": true,
+    "items": [
+      {
+        "value": "500",
+        "suffix": "+",
+        "label": "Projects Delivered"
+      },
+      {
+        "value": "12",
+        "suffix": "yrs",
+        "label": "Industry Experience"
+      },
+      {
+        "value": "4",
+        "suffix": "countries",
+        "label": "Regional Presence"
+      },
+      {
+        "value": "ASEAN",
+        "suffix": "",
+        "label": "Energy Award Winner"
+      }
+    ]
+  },
+  "testimonials": {
+    "show": true,
+    "eyebrow": "Testimonials",
+    "title": "Hear From Our Satisfied Customers",
+    "items": [
+      {
+        "rating": 5,
+        "text": "The project implementation went smoothly according to the planned work schedule. The staff from KLC are also very responsive, active & professional. Documents are easy to complete with the help of KLC admin.",
+        "label": "Industry : Healthcare"
+      },
+      {
+        "rating": 5,
+        "text": "A very responsible salesperson. From not understanding anything to what we know about solar energy now, he patiently explained it. Reasonable prices and first-class service. Highly recommended.",
+        "label": "Mr Kenneth"
+      }
+    ],
+    "ghostText": "TRUSTED"
+  },
+  "portfolio": {
+    "show": true,
+    "eyebrow": "Portfolio",
+    "title": "Check Out Our Latest Projects",
+    "featured": {
+      "title": "Large Scale Solar",
+      "image": "https://images.unsplash.com/photo-1592833159155-c62df1b65634?auto=format&fit=crop&w=1000&q=80",
+      "buttonLabel": "Learn More",
+      "url": ""
+    },
+    "gallery": [
+      {
+        "image": "https://images.unsplash.com/photo-1613665813446-82a78c468a1d?auto=format&fit=crop&w=600&q=80",
+        "alt": "Commercial Solar"
+      },
+      {
+        "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=600&q=80",
+        "alt": "Residential Solar"
+      }
+    ],
+    "ghostText": "PORTFOLIO"
+  },
+  "accreditation": {
+    "show": true,
+    "title": "Our Accreditation",
+    "subtitle": "Quality You Can Trust",
+    "items": [
+      {
+        "name": "ISO 9001:2015",
+        "logo": "",
+        "icon": "fas fa-certificate",
+        "iconColor": "#1d4ed8"
+      },
+      {
+        "name": "SEDA Malaysia",
+        "logo": "",
+        "icon": "fas fa-leaf",
+        "iconColor": "#16a34a"
+      },
+      {
+        "name": "ISO 45001",
+        "logo": "",
+        "icon": "fas fa-shield-alt",
+        "iconColor": "#1e40af"
+      },
+      {
+        "name": "MyHIJAU",
+        "logo": "",
+        "icon": "fas fa-award",
+        "iconColor": "#22c55e"
+      },
+      {
+        "name": "Suruhanjaya Tenaga",
+        "logo": "",
+        "icon": "fas fa-bolt",
+        "iconColor": "#dc2626"
+      },
+      {
+        "name": "CIDB Malaysia",
+        "logo": "",
+        "icon": "fas fa-hard-hat",
+        "iconColor": "#0d9488"
+      }
+    ]
+  },
+  "newsroom": {
+    "show": true,
+    "eyebrow": "Newsroom",
+    "title": "Get Latest News And Updates",
+    "count": 3,
+    "viewAllLabel": "View all articles"
+  },
+  "cta": {
+    "show": true,
+    "title": "Wish To Know\nMore About Us ?",
+    "text": "Call us now at +(6)03 1234 5678 or email us at advisory@kurnialestari.com.my to find out more.",
+    "buttonLabel": "Submit Message",
+    "image": "https://images.unsplash.com/photo-1509803874385-db7c23652552?auto=format&fit=crop&w=1920&q=80"
+  }
+}

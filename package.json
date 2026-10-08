@@ -1,0 +1,22 @@
+{
+  "name": "klc-website",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/prebuild.mjs && astro dev",
+    "build": "node scripts/prebuild.mjs && astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "3.7.4",
+    "@sveltia/cms": "0.231.0",
+    "@tailwindcss/vite": "4.3.3",
+    "astro": "7.3.7",
+    "marked": "18.1.0",
+    "tailwindcss": "4.3.3"
+  },
+  "devDependencies": {
+    "wrangler": "4.148.0"
+  }
+}

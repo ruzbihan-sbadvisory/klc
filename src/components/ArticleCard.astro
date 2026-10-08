@@ -1,0 +1,27 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { dayMonth, site } from '../lib';
+interface Props { post: CollectionEntry<'artikel'>; showMeta?: boolean }
+const { post, showMeta = false } = Astro.props;
+const d = dayMonth(post.data.date);
+const url = `/artikel/${post.id}/`;
+---
+<a href={url} data-category={post.data.category} class="sweep bg-white rounded-xl overflow-hidden shadow-soft flex flex-col h-full group">
+  <div class="relative h-64 overflow-hidden bg-gray-50">
+    {post.data.cover
+      ? <img src={post.data.cover} alt={post.data.coverAlt || post.data.title} loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+      : <div class="w-full h-full flex items-center justify-center text-4xl font-extrabold tracking-tighter text-brand-blue">{site.logo.text || site.shortName}</div>}
+    <div class="absolute bottom-0 left-0 bg-brand-blue text-white px-4 py-3 flex flex-col items-center justify-center min-w-[70px]">
+      <span class="text-2xl font-bold leading-none">{d.day}</span>
+      <span class="text-xs uppercase tracking-wider mt-1">{d.month}</span>
+    </div>
+    {showMeta && post.data.category && (
+      <span class="absolute top-4 left-4 bg-white/95 text-brand-blue text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full">{post.data.category}</span>
+    )}
+  </div>
+  <div class="p-8 flex-grow flex flex-col">
+    <h3 class="text-[17px] font-bold text-gray-900 leading-snug group-hover:text-brand-blue">{post.data.title}</h3>
+    {showMeta && <p class="text-sm text-gray-600 mt-3 leading-relaxed line-clamp-3">{post.data.description}</p>}
+    {showMeta && <span class="mt-auto pt-5 text-sm font-semibold text-brand-blue">Read more <i class="fas fa-arrow-right ml-1 text-brand-gold transition-transform group-hover:translate-x-1"></i></span>}
+  </div>
+</a>
